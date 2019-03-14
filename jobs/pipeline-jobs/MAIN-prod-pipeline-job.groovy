@@ -41,13 +41,12 @@ chmod 600 /home/centos/devops.pem
       terraform init
       terraform apply -auto-approve
       '''
-              }
-          }
-          } finally {
+                }
+             }
+           } 
+    finally {
       sh 'rm -f /home/centos/devops.pem'
-    }
+       }
     } 
   }
 }
-
-  
