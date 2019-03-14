@@ -43,7 +43,9 @@ chmod 600 /home/centos/devops.pem
       '''
               }
           }
-          }
+          } finally {
+      sh 'rm -f /home/centos/devops.pem'
+    }
     } 
   }
 }
