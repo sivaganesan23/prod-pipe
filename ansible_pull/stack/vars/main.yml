@@ -1,0 +1,8 @@
+APPUSER: student
+APPUSERHOME: /home/{{APPUSER}}
+TOMCAT_URL: http://mirrors.estointernet.in/apache/tomcat/tomcat-9/v9.0.16/bin/apache-tomcat-9.0.16.tar.gz
+TARFILE: "{{ TOMCAT_URL.split('/') | last }}"
+TOMCAT_LOC: "{{APPUSERHOME}}/{{TARFILE | regex_replace('.tar.gz','') }}"
+WAR_URL: https://github.com/citb33/project-documentation/raw/master/studentapp.war
+WAR_FILE: "{{ WAR_URL.split('/') | last }}"
+TOMCAT_INIT_SCRIPT_URL: https://raw.githubusercontent.com/citb33/project-documentation/master/tomcat-init-script

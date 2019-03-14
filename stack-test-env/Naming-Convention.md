@@ -1,0 +1,7 @@
+VPC:  PROJ-NAME-VPC
+SUBNET:
+    PUBLIC|PRIVATE: 
+        Subnet-{Pub|priv}-Proj-AZ
+IGW: PROJ-IGW
+RT: PROJ-{PUB|PRIV}-RT
+SG: COMP-PROJ-SG

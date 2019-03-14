@@ -1,0 +1,75 @@
+- name: Install Java
+  package:
+    name: java
+    state: present
+
+- name: Add studentapp user 
+  user:
+    name: "{{APPUSER}}"
+
+- name: Download and extract tomcat
+  unarchive:
+    src: "{{TOMCAT_URL}}"
+    dest: "{{APPUSERHOME}}"
+    remote_src: yes
+  become_user: "{{APPUSER}}"
+
+- name: Find files in webapps
+  find: 
+    paths: "{{TOMCAT_LOC}}/webapps"
+    file_type: any
+  register: out
+
+- name: Remove old webapps
+  file:
+    path: "{{item.path}}"
+    state: absent
+  with_items: 
+     - "{{out.files}}"
+
+- name: Download war file 
+  get_url:
+    url: "{{WAR_URL}}"
+    dest: "{{TOMCAT_LOC}}/webapps/{{WAR_FILE}}"
+
+- name: Add JDBC connection to context.xml 
+  lineinfile:
+    path: "{{TOMCAT_LOC}}/conf/context.xml"
+    insertbefore: "</Context>"
+    line: | 
+      <Resource name="jdbc/TestDB" auth="Container" type="javax.sql.DataSource" maxActive="100" maxIdle="30" maxWait="10000" username=student password=student1 driverClassName="com.mysql.jdbc.Driver" url="jdbc:mysql://rds-studentapp.coidfclm7f8d.us-east-2.rds.amazonaws.com:3306/rds-studentapp"/>
+
+- name: Download tomcat init script 
+  get_url:  
+    url: "{{TOMCAT_INIT_SCRIPT_URL}}"
+    dest: /etc/init.d/tomcat
+    mode: 0775
+
+- name: Relaod services
+  shell: systemctl daemon-reload
+
+- name: Start tomcat service
+  service:
+    name: tomcat
+    state: started
+    enabled: yes
+
+- name: Install web service
+  package:
+    name: httpd
+    state: installed
+
+- name: Copy index.html file 
+  copy:
+    src: index.html
+    dest: /var/www/html/index.html
+
+- name: Copy tomcat reverse proxy config
+  template:
+    src:  tomcat.conf
+    dest: /etc/httpd/conf.d/tomcat.conf 
+
+- name: Start service 
+  service:
+    name: httpd
+    state: started
