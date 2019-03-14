@@ -1,36 +1,3 @@
-pipelineJob('dev-pipeline-job') {
-  description('Dev-PipeLine-Job')
-  displayName('Dev-PipeLine-Job')
-  configure { flowdefinition ->
-    flowdefinition / 'properties' << 'org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty' {
-      'triggers' {
-        'hudson.triggers.SCMTrigger' {
-          'spec'('H/2 * * * *')
-          'ignorePostCommitHooks'(false)
-        }
-      }
-    }
-    flowdefinition << delegate.'definition'(class:'org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition',plugin:'workflow-cps') {
-      'scm'(class:'hudson.plugins.git.GitSCM',plugin:'git') {
-        'userRemoteConfigs' {
-          'hudson.plugins.git.UserRemoteConfig' {
-            'url'('https://github.com/citb33/docker.git')
-          }
-        }
-
-        'branches' {
-          'hudson.plugins.git.BranchSpec' {
-            'name'('*/master')
-          }
-        }
-      }
-      'scriptPath'('tools/jenkins/jobs/pipeline-jobs/MAIN-dev-pipeline-job.groovy')
-      'lightweight'(true)
-    }
-  }
-}
-
-
 pipelineJob('prod-pipeline-job') {
   description('Prod-PipeLine-Job')
   displayName('Prod-PipeLine-Job')
@@ -43,7 +10,7 @@ pipelineJob('prod-pipeline-job') {
       'scm'(class:'hudson.plugins.git.GitSCM',plugin:'git') {
         'userRemoteConfigs' {
           'hudson.plugins.git.UserRemoteConfig' {
-            'url'('https://github.com/citb33/docker.git')
+            'url'('https://github.com/sivaganesan23/prod-pipe.git')
           }
         }
 
@@ -53,7 +20,7 @@ pipelineJob('prod-pipeline-job') {
           }
         }
       }
-      'scriptPath'('Prod_pipeline.groovy')
+      'scriptPath'('jobs/pipeline-jobs/MAIN-prod-pipeline-job.groovy')
       'lightweight'(true)
     }
   }
