@@ -2,7 +2,7 @@ provider "aws" {}
 
 terraform {
   backend "s3" {
-    bucket = "terra-citb33"
+    bucket = "studproj"
     key    = "stack/terraform.tfstate"
     region = "us-east-2"
   }
