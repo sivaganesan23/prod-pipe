@@ -43,7 +43,7 @@ resource "null_resource" "appsetup" {
     provisioner "remote-exec" {
         inline = [
         "sudo yum install ansible git -y",
-        "ansible-pull -U https://github.com/sivaganesan23/ansible_pull_demo.git -e DBUSER=${var.dbuser} -e DBPASS=${var.dbpass}  -e DBIP=${var.dbip} -e DBNAME=${var.dbname}",
+        "ansible-pull -U https://github.com/sivaganesan23/prod-pipe.git ansible_pull/webapp.yml -e DBUSER=${var.dbuser} -e DBPASS=${var.dbpass}  -e DBIP=${var.dbip} -e DBNAME=${var.dbname}",
         ]
 
         connection {
