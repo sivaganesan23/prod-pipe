@@ -17,7 +17,7 @@
       loop: "{{out.files}}"  
 
     - name: find war file
-      local_action: find path="/home/centos/workspace/prod-pipeline-job/APPCODE/target" patterns: "*.war"
+      local_action: find path="/home/centos/workspace/prod-pipeline-job/APPCODE/target" patterns="*.war"
       register: out
       
     - name: copy war file
