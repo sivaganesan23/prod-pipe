@@ -1,74 +1,28 @@
-- name: Deploy the war file 
-  hosts: all 
+- name: deploy war file
+  hosts: all
   become: yes
   tasks:
-    - name: Find all files in webapps
+    - name: find webapps file
       become_user: student
       find:
-        paths: /home/student/apache-tomcat-9.0.14/webapps
+        path: /home/student/apache-tomcat-9.0.16/webapps
         file_type: any
       register: out
 
-    - name: Remove old webapps
+    - name: remove webapps
       become_user: student
       file:
         path: "{{item.path}}"
         state: absent
-      loop: "{{out.files}}"
-    
-    - name: Empty the log file 
-      shell: "> /home/student/apache-tomcat-9.0.14/logs/catalina.out"
+      loop: "{{out.files}}"  
 
-    - name: Get API Application PID
-      become_user: student
-      shell: ps -ef | grep 'java -jar /home/student/studentapi.war'  | grep -v grep | awk '{print $2}' 
-      register: out 
-
-    - name: Stop API Application 
-      become_user: student 
-      shell: kill -9 {{out.stdout}}
-      when: out.stdout != ""
-
-    - name: Clean API war 
-      become_user: student
-      file:
-        path: /home/student/studentapi.war
-        state: absent      
-
-    - name: Find war file in APPCODE
-      local_action: find paths="/home/centos/workspace/prod-pipeline-job/APPCODE/target" patterns="*.war"
+    - name: find war file
+      local_action: find path: "/home/centos/workspace/prod-pipeline-job/APPCODE/target" patterns: "*.war"
       register: out
-
-    - name: Copy a file to remote server
-      become_user: student
-      copy: 
-        src: "{{item.path}}"
-        dest: /home/student/apache-tomcat-9.0.14/webapps/studentapp.war
-      loop: "{{out.files}}"
-
-    - name: Copy a file to remote server for api usage
-      become_user: student
-      copy: 
-        src: "{{item.path}}"
-        dest: /home/student/studentapi.war
-      loop: "{{out.files}}"
-
-    - name: Copy env file 
-      become_user: student
-      copy: 
-        src: "/tmp/rds.env"
-        dest: /tmp/rds.env
-
-    - name: Run API war file 
-      shell: source /tmp/rds.env && nohup java -jar /home/student/studentapi.war &
-      ignore_errors: yes
-      become_user: student
-
-    - name: Wait for deployment completion
-      become_user: student
-      wait_for:
-        path: /home/student/apache-tomcat-9.0.14/logs/catalina.out
-        search_regex: 'org.apache.catalina.startup.HostConfig.deployWAR Deployment of web application archive'
-
-    
       
+    - name: copy war file
+      copy:
+        src: "{{item.path}}"
+        dest: /home/student/apache-tomcat-9.0.16/webapps/studentapp.war
+      loop: "{{out.files}}"
+
