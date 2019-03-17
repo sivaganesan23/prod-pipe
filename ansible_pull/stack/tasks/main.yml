@@ -24,8 +24,7 @@
   file:
     path: "{{item.path}}"
     state: absent
-  with_items: 
-     - "{{out.files}}"
+  loop: "{{out.files}}"
 
 - name: Download war file 
   get_url:
