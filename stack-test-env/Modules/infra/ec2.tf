@@ -45,7 +45,12 @@ resource "null_resource" "appsetup" {
         "sudo yum install epel-release",
         "sudo yum install ansible git -y",
         "ansible-pull -U https://github.com/sivaganesan23/prod-pipe.git ansible_pull/webapp.yml -e DBUSER=${var.dbuser} -e DBPASS=${var.dbpass}  -e DBIP=${var.dbip} -e DBNAME=${var.dbname}",
-        ]
+        "sudo systemctl enable httpd",
+          "sudo systemctl start httpd",
+          "sudo systemctl enable tomcat",
+          "sudo systemctl start tomcat",
+          
+          ]
 
         connection {
             type        = "ssh"
