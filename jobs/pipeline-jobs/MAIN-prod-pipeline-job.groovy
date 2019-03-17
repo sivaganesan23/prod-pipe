@@ -45,9 +45,20 @@ chmod 600 /home/centos/devops.pem
              }
            } 
     }
-    finally {
+    catch(Exception ex) {
       sh 'rm -f /home/centos/devops.pem'
-       }
+           }
+    try { 
+    dir('ANSIBLE') {
+        sh '''
+        ansible-playbook -i /tmp/hosts ansible_pull/deploy.yml
+        '''
+      }
+    } catch(Exception ex) {
+      sh 'rm -f /home/centos/devops.pem'
+      throw e
+    } 
+  }
     } 
   }
 
