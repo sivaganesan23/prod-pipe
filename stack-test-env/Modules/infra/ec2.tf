@@ -42,6 +42,7 @@ resource "null_resource" "appsetup" {
     count = 1
     provisioner "remote-exec" {
         inline = [
+        "sudo yum install epel-release"
         "sudo yum install ansible git -y",
         "ansible-pull -U https://github.com/sivaganesan23/prod-pipe.git ansible_pull/webapp.yml -e DBUSER=${var.dbuser} -e DBPASS=${var.dbpass}  -e DBIP=${var.dbip} -e DBNAME=${var.dbname}",
         ]
