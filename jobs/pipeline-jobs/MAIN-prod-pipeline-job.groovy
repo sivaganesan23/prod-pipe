@@ -28,7 +28,7 @@ node('SLAVE') {
 chmod 600 /home/centos/devops.pem
 '''
     }
-    try {
+    
           dir('TERRAFORM') {
             git 'https://github.com/sivaganesan23/prod-pipe.git'
             wrap([$class: 'AnsiColorBuildWrapper', 'colorMapName': 'xterm']) {
@@ -44,7 +44,7 @@ chmod 600 /home/centos/devops.pem
                 }
              }
            } 
-    }
+   
     try { 
     dir('ANSIBLE') {
         git 'https://github.com/sivaganesan23/prod-pipe.git'
