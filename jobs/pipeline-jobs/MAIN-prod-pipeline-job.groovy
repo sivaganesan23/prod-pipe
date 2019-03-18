@@ -26,7 +26,7 @@ node('SLAVE') {
     withCredentials([file(credentialsId: 'CENTOS-USER-PEM-FILE', variable: 'FILE')]) {
       sh '''cat $FILE >/home/centos/devops.pem
 chmod 600 /home/centos/devops.pem
- '''
+'''
     }
     try {
           dir('TERRAFORM') {
@@ -41,20 +41,14 @@ chmod 600 /home/centos/devops.pem
       terraform init
       terraform apply -auto-approve
       '''
+       git 'https://github.com/sivaganesan23/prod-pipe.git'
+        sh '''
+        ansible-playbook -i /tmp/hosts ansible_pull/deploy.yml
+        '''
               }
           }
           }
-    } catch(Exception ex) {
-      sh 'rm -f /home/centos/devops.pem'
-    }
-
-    try { 
-      dir('ANSIBLE') {
-         git 'https://github.com/sivaganesan23/prod-pipe.git'
-        sh '''
-        ansible-playbook -i /tmp/hosts devops.pem ansible_pull/deploy.yml
-        '''
-      }
+    
     } catch(Exception ex) {
       sh 'rm -f /home/centos/devops.pem'
       
