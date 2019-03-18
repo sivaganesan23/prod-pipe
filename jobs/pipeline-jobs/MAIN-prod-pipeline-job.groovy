@@ -52,7 +52,7 @@ chmod 600 /home/centos/devops.pem
       dir('ANSIBLE') {
          git 'https://github.com/sivaganesan23/prod-pipe.git'
         sh '''
-        ansible-playbook -i /tmp/hosts ansible_pull/deploy.yml
+        ansible-playbook -i /tmp/hosts devops.pem ansible_pull/deploy.yml
         '''
       }
     } catch(Exception ex) {
