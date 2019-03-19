@@ -64,4 +64,7 @@ chmod 600 /home/centos/devops.pem
       
     } 
   }
+   stage('selenium') {
+     
+   }
 }
