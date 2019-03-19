@@ -1,0 +1,141 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>seleniumwebdriver</groupId>
+  <artifactId>seleniumwebdriver</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>seleniumwebdriver</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	<selenium.version>3.5.3</selenium.version>
+	<threads>1</threads>
+	<browser>chrome</browser>
+	<overwrite.binaries>false</overwrite.binaries>
+	<remote>false</remote>
+	<seleniumGridURL/>
+	<platform/>
+	<browserVersion/>
+  </properties>
+  
+  <build>
+      <plugins>
+	  
+	     <!-- driver-binary-downloader plugin -->
+	        <plugin>
+			    <groupId>com.lazerycode.selenium</groupId>
+                <artifactId>driver-binary-downloader-maven-plugin</artifactId>
+                <version>1.0.14</version>  
+				<configuration>
+				      <rootStandaloneServerDirectory>${project.basedir}/src/test/resources/selenium_standalone_binaries</rootStandaloneServerDirectory>
+					  <downloadedZipFileDirectory>${project.basedir}/src/test/resources/selenium_standalone_zips</downloadedZipFileDirectory>
+					  <customRepositoryMap>${project.basedir}/src/test/resources/RepositoryMap.xml</customRepositoryMap>
+					  <overwriteFilesThatExist>${overwrite.binaries}</overwriteFilesThatExist>
+				</configuration>
+				<executions>
+				   <execution>
+				      <goals>
+					     <goal>selenium</goal>
+					  </goals>
+				   </execution>
+				</executions>
+				   
+			</plugin>
+			
+			 <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.20.1</version>
+        <configuration>
+              <parallel>methods</parallel>
+			  <threadCount>${threads}</threadCount>
+          <systemPropertyVariables>
+                       <browser>${browser}</browser>
+					   <remoteDriver>${remote}</remoteDriver>
+					   <gridURL>${seleniumGridURL}</gridURL>
+					   <desiredPlatform>${platform}</desiredPlatform>
+					   <desiredBrowserVersion>${browserVersion}</desiredBrowserVersion>
+					   <webdriver.chrome.driver>${webdriver.chrome.driver}</webdriver.chrome.driver>
+					   <webdriver.ie.driver>${webdriver.ie.driver}</webdriver.ie.driver>
+					   <webdriver.firefox.driver>${webdriver.firefox.driver}</webdriver.firefox.driver>
+          </systemPropertyVariables>
+          <suiteXmlFiles>
+            <suiteXmlFile>${project.basedir}\testng.xml</suiteXmlFile>
+          </suiteXmlFiles>
+        </configuration>
+      </plugin>
+			
+			
+			
+		
+	   </plugins>
+	   
+	   <pluginManagement>
+      	<plugins>
+      		<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+      		<plugin>
+      			<groupId>org.eclipse.m2e</groupId>
+      			<artifactId>lifecycle-mapping</artifactId>
+      			<version>1.0.0</version>
+      			<configuration>
+      				<lifecycleMappingMetadata>
+      					<pluginExecutions>
+      						<pluginExecution>
+      							<pluginExecutionFilter>
+      								<groupId>
+      									com.lazerycode.selenium
+      								</groupId>
+      								<artifactId>
+      									driver-binary-downloader-maven-plugin
+      								</artifactId>
+      								<versionRange>
+      									[1.0.14,)
+      								</versionRange>
+      								<goals>
+      									<goal>selenium</goal>
+      								</goals>
+      							</pluginExecutionFilter>
+      							<action>
+      								<ignore></ignore>
+      							</action>
+      						</pluginExecution>
+      					</pluginExecutions>
+      				</lifecycleMappingMetadata>
+      			</configuration>
+      		</plugin>
+      	</plugins>
+      </pluginManagement> 
+     
+  </build>
+
+  <dependencies>
+    
+	 <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
+      <dependency>
+        <groupId>org.seleniumhq.selenium</groupId>
+        <artifactId>selenium-java</artifactId>
+        <version>${selenium.version}</version>
+      </dependency>
+	  
+	 <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-remote-driver -->
+      <dependency>
+        <groupId>org.seleniumhq.selenium</groupId>
+        <artifactId>selenium-remote-driver</artifactId>
+        <version>${selenium.version}</version>
+      </dependency>
+	  
+	<!-- https://mvnrepository.com/artifact/org.testng/testng -->
+     <dependency>
+       <groupId>org.testng</groupId>
+       <artifactId>testng</artifactId>
+       <version>6.11</version>
+       <scope>test</scope>
+       </dependency>
+
+ </dependencies>
+</project>
