@@ -64,7 +64,14 @@ chmod 600 /home/centos/devops.pem
       
     } 
   }
-   stage('selenium') {
-     
-   }
-}
+   stage('UI TESTING') {
+      dir('selenium') {
+        git 'https://github.com/sivaganesan23/prod-pipe.git'
+        sh ''' 
+        PUBLIC_IP=$(cat /tmp/pubip)
+        sed -i -e "s/IPADDRESS/$PUBLIC_IP/" /selenium/src/test/java/framework/CrudStudent.java
+        mvn clean install "-Dremote=true" "-DseleniumGridURL=http://sivaganesan23:14578b4e-f344-4872-9bbb-a265412e4019@ondemand.saucelabs.com:80/wd/hub" "-Dplatform=Windows" "-Dbrowser=Chrome" "-Dbrowserversion=51" "-Doverwrite.binaries=true"
+          '''    
+              }
+           }
+        } 
