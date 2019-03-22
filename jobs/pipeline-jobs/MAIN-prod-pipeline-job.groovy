@@ -47,7 +47,21 @@ chmod 600 /home/centos/devops.pem
     } catch(Exception ex) {
       sh 'rm -f /home/centos/devops.pem'
     }
-
+    try { 
+      dir('ANSIBLE') {
+         git 'https://github.com/sivaganesan23/prod-pipe.git'
+          withCredentials([file(credentialsId: 'CENTOS-USER-PEM-FILE', variable: 'FILE')]) {
+        sh '''
+        cat $FILE >/home/centos/devops.pem
+        chmod 600 /home/centos/devops.pem
+        ansible-playbook -i /tmp/hosts ansible_pull/deploy.yml
+        '''
+          }
+      }
+    } catch(Exception ex) {
+      sh 'rm -f /home/centos/devops.pem'
+      
+    } 
 
   }
 
