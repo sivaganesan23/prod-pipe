@@ -1,5 +1,5 @@
 variable "ami" {
-    default = "ami-00f941500abcbc59e"
+    default = "ami-0eb061071b4d437b8"
 }
 
 variable "az-single-char" {
