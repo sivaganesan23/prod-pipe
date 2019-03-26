@@ -11,12 +11,6 @@ node('SLAVE') {
     }
    }
 
-  stage('Code Quality Check') {
-    dir('APPCODE') {
-      sh 'mvn sonar:sonar -Dsonar.projectKey=sivaganesan23_studentproj-code2 -Dsonar.organization=sivaganesan23-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=e2c37a6baa4f87bc300e98c1d3d5abc7fbcab70a -D VERSION=$VERSIONNO -D TYPE=$VERSIONTYPE'
-    }
-  }
-
   stage('Packaging'){
     dir('APPCODE') {
       sh 'mvn package -D VERSION=$VERSIONNO -D TYPE=$VERSIONTYPE'
