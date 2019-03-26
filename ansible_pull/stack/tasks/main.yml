@@ -36,7 +36,7 @@
     path: "{{TOMCAT_LOC}}/conf/context.xml"
     insertbefore: "</Context>"
     line: | 
-      <Resource name="jdbc/TestDB" auth="Container" type="javax.sql.DataSource" maxActive="100" maxIdle="30" maxWait="10000" username="student" password="student1" driverClassName="com.mysql.jdbc.Driver" url="jdbc:mysql://rds-studentapp.coidfclm7f8d.us-east-2.rds.amazonaws.com:3306/rds-studentapp"/>
+      <Resource name="jdbc/TestDB" auth="Container" type="javax.sql.DataSource" maxActive="100" maxIdle="30" maxWait="10000" username="{{DBUSER}}" password="{{DBPASS}}" driverClassName="com.mysql.jdbc.Driver" url="jdbc:mysql://{{DBIP}}:3306/{{DBNAME}}"/>
 
 - name: Download tomcat init script 
   get_url:  
