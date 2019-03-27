@@ -17,6 +17,9 @@
       with_items:
         - "{{out.files}}"  
 
+    - name: remove catalina files
+      shell: "> /home/student/apache-tomcat-9.0.17/logs/catalina.out"
+
     - name: find war file
       local_action: find path="/home/centos/workspace/prod-pipeline-job/APPCODE/target" patterns="*.war"
       register: out
@@ -27,4 +30,29 @@
         dest: /home/student/apache-tomcat-9.0.16/webapps/studentapp.war
       with_items:
         - "{{out.files}}"
+
+    - name: copy API file
+      copy:
+        src: "{{item.path}}"
+        dest: /home/student/studentapi.war
+      with_items:
+        - "{{out.files}}"
+
+    - name: copy env file
+      copy:
+        src: "/tmp/rds.env"
+        dest: "/tmp/rds.env"
+
+    - name: start api file
+      shell: source /tmp/rds.env && java -jar studentapi.war &
+      ignore_errors: yes
+      become_user: student
+
+    - name: wait for deployment completion
+      become_user: student
+      wait_for:
+        path: /home/student/apache-tomcat-9.0.17/logs/catalina.out
+        search_regex: 'org.apache.catalina.startup.HostConfig.deployWAR Deployment of web application archive'
+
+
 
