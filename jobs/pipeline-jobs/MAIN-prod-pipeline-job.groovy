@@ -1,3 +1,4 @@
+def Destroystack = true
 node('SLAVE') {
    stage('CLONE') {
     dir('APPCODE') {
@@ -68,5 +69,11 @@ chmod 600 /home/centos/devops.pem
           '''    
               }
            }
+
+    stage('API Testing'){
+        dir('selenium'){
+            
+        }
+    }
 
         } 
