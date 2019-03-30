@@ -33,7 +33,7 @@
     - name: copy war file
       copy:
         src: "{{item.path}}"
-        dest: /home/student/apache-tomcat-9.0.16/webapps/studentapp.war
+        dest: /home/student/apache-tomcat-9.0.17/webapps/studentapp.war
       with_items:
         - "{{out.files}}"       
 
