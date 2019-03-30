@@ -72,7 +72,12 @@ chmod 600 /home/centos/devops.pem
 
     stage('API Testing'){
         dir('selenium'){
-            
+         git 'https://github.com/sivaganesan23/prod-pipe.git'
+        sh ''' 
+        cd selenium
+        PUBLIC_IP=$(cat /tmp/pubip)
+         python scripts/api-tests.py $PUBLIC_IP
+         '''
         }
     }
 
