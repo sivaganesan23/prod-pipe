@@ -20,6 +20,12 @@
     - name: remove catalina files
       shell: "> /home/student/apache-tomcat-9.0.17/logs/catalina.out"
 
+    - name: remove API
+      become_user: student
+      file:
+        path: /home/student/studentapi.war
+        state: absent       
+
     - name: find war file
       local_action: find path="/home/centos/workspace/prod-pipeline-job/APPCODE/target" patterns="*.war"
       register: out
@@ -29,7 +35,7 @@
         src: "{{item.path}}"
         dest: /home/student/apache-tomcat-9.0.16/webapps/studentapp.war
       with_items:
-        - "{{out.files}}"
+        - "{{out.files}}"       
 
     - name: copy API file
       copy:
@@ -44,7 +50,7 @@
         dest: "/tmp/rds.env"
 
     - name: start api file
-      shell: source /tmp/rds.env && java -jar studentapi.war &
+      shell: source /tmp/rds.env && java -jar /home/student/studentapi.war &
       ignore_errors: yes
       become_user: student
 
