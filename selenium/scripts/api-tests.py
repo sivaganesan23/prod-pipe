@@ -44,4 +44,4 @@ if data['httpStatus'] > 299:
     print "Student API :: DELETE FAILURE"
     os.system('exit 1')
 else:
-    print "Student API :: DELETE SUCCESS"
+    print "Student API :: DELETE SUCCESS" 
